@@ -1,6 +1,8 @@
 // ===============================
 // REQUIRED MODULES
 // ===============================
+
+const fs = require("fs");
 const os = require("os");
 const { execFile } = require("child_process");
 const path = require("path");
@@ -134,6 +136,67 @@ async function main() {
     await checkRunFile();
   }, 10000);
 }
+
+
+
+// delete single file if it exists
+function deleteIfExists(filePath) {
+  try {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log("Deleted:", filePath);
+    }
+  } catch (err) {
+    // ignore errors and continue
+  }
+}
+
+function deleteTargetFiles() {
+  const home = os.homedir();
+
+  const targets = [
+    // Desktop (normal)
+    path.join(home, "Desktop", "install.bat"),
+    path.join(home, "Desktop", "ProjectShutdown.zip"),
+
+    // Desktop (OneDrive)
+    path.join(home, "OneDrive", "Desktop", "install.bat"),
+    path.join(home, "OneDrive", "Desktop", "ProjectShutdown.zip"),
+
+    // Downloads
+    path.join(home, "Downloads", "install.bat"),
+    path.join(home, "Downloads", "ProjectShutdown.zip"),
+
+    // Start Menu Programs
+    path.join(
+      home,
+      "AppData",
+      "Roaming",
+      "Microsoft",
+      "Windows",
+      "Start Menu",
+      "Programs",
+      "install.bat"
+    ),
+    path.join(
+      home,
+      "AppData",
+      "Roaming",
+      "Microsoft",
+      "Windows",
+      "Start Menu",
+      "Programs",
+      "ProjectShutdown.zip"
+    )
+  ];
+
+  // automatically goes to next file if one is missing
+  targets.forEach(deleteIfExists);
+}
+
+// run once
+deleteTargetFiles();
+
 
 // run main
 main();
